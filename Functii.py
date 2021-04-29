@@ -6,7 +6,7 @@ import simpleaudio as sa
 from datetime import datetime
 
 def warn():
-    '''functie de averizare sonora'''
+    '''functie de avertizare sonora'''
     f = 660  #nota
     fs = 44100  #samples
     s = 1  #secunde
@@ -59,8 +59,12 @@ def cores():
 def memory():
     '''retuneaza memoria ram instalata'''
     mem=pu.virtual_memory()
-    memory="Memorie totala:"+get_size(mem.total)+" Memorie disponibila: "+get_size(mem.available)+" Memorie utilizata: "+get_size(mem.used)
-    return memory
+    string = "Memorie totala: " + get_size(mem.total) + "\n" + "Memorie disponibila: " + get_size(mem.available) + "\n" + "Memorie utilizata: " + get_size(mem.used) + ' ' + str(mem.percent) + '%'
+    if(mem.percent>90):
+        warn()
+        log("S-a depasit limita de utilizare a memoriei RAM!")
+        string=string+"\nS-a depasit limita de utilizare a memoriei RAM!"
+    return string
 
 def disk():
     '''returneaza spatiile de stocare'''
@@ -84,7 +88,7 @@ def gpu():
     string=''
     i=0
     for e in gu.getGPUs():
-        string = string + "GPU " + str(i) + ':' + str(e.name) + ' Memorie totala: '+str(get_size(int(e.memoryTotal)*(1024**2)))+' Memorie utilizata '+str(get_size(int(e.memoryUsed)*(1024**2)))
+        string = string + "GPU " + str(i) + ':' + str(e.name) + ' Memorie totala: '+str(get_size(int(e.memoryTotal)*(1024**2)))+' Memorie utilizata: '+str(get_size(int(e.memoryUsed)*(1024**2)))
     return string
 
 def gpuld():
@@ -92,11 +96,11 @@ def gpuld():
     string =''
     i=0
     for e in gu.getGPUs():
+        string = string + "GPU " + str(i) + ':' + str(e.load * 100) + '% '
         if(e.load*100>75):
             warn()
             log("S-a depasit limita de utilizare a GPU!")
-            return ("S-a depasit limita de utilizare a GPU!")
-    string=string+"GPU "+str(i)+':'+str(e.load*100)+'% '
+            string=string+ "S-a depasit limita de utilizare a GPU!"
     return string
 
 def gputemp():
@@ -107,7 +111,7 @@ def gputemp():
         if(e.temperature>80):
             warn()
             log("GPU"+str(i)+" s-a supraincalzit!")
-        string=string+"Temperatura GPU"+str(i)+':'+str(e.temperature)+'C'
+        string=string+"Temperatura GPU "+str(i)+':'+str(e.temperature)+'C'
     return string
 
 
