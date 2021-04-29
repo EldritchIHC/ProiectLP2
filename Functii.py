@@ -4,7 +4,7 @@ import GPUtil as gu
 import numpy as np
 import simpleaudio as sa
 import platform
-import os
+#import os
 #import cpuutilization
 #print(platform.processor())
 #pu.sensors_temperatures(False)
