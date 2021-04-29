@@ -3,7 +3,7 @@ import cpuinfo
 import GPUtil as gu
 import numpy as np
 import simpleaudio as sa
-import platform
+#import platform
 #import os
 #import cpuutilization
 #print(platform.processor())
