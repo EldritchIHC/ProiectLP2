@@ -4,7 +4,7 @@ import GPUtil as gu
 import numpy as np
 import simpleaudio as sa
 from datetime import datetime
-#
+
 def warn():
     '''functie de avertizare sonora'''
     f = 660  #nota
