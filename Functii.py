@@ -3,17 +3,7 @@ import cpuinfo
 import GPUtil as gu
 import numpy as np
 import simpleaudio as sa
-import platform
-#import os
-#import cpuutilization
-#print(platform.processor())
-#pu.sensors_temperatures(False)
-#print("d:{d}".format(d=pu.disk_usage("D:")[3]))
-#print(pu.sensors_fans())
-#print(pu.virtual_memory())
-#while(True):
- #   print("cpu:{cpu}".format(cpu=pu.cpu_percent(interval=1)))
-
+from datetime import datetime
 
 def warn():
     '''functie de averizare sonora'''
@@ -29,6 +19,11 @@ def warn():
         sa.sleep(2)
     play_obj.wait_done()
 
+def log(f):
+    ''' scrie intr-un fisier cand apare o depasire a limitelor resurselor'''
+    with open('log.txt','a',encoding='utf-8') as log:
+        log.write("La data: "+str(datetime.today()) + '\n')
+        log.write("Eroare:"+f+' \n'+' \n')
 
 def get_size(bytes, suffix="B"):
     '''modifica valorile de la bytes la multiplii'''
@@ -48,9 +43,10 @@ def cpuld():
     string=''
     i=0
     for e in list:
-        if(e>75):
+        if(e>80):
             warn()
-            return ("S-a depasit limita de utilizare a nucleului "+ str(i))
+            log("S-a depasit limita de utilizare a nucleului "+ str(i))
+            #string=string+ ("S-a depasit limita de utilizare a nucleului "+ str(i)+'\n')
         i = i + 1
         string=string+"Nucleul "+str(i)+":"+ str(e)+"% "
     return string
@@ -69,40 +65,58 @@ def memory():
 def disk():
     '''returneaza spatiile de stocare'''
     part=pu.disk_partitions()
+    string=''
     try:
         for e in part:
             total=get_size(pu.disk_usage(str(e.device).replace("\\",'')).total)
             used=get_size(pu.disk_usage(str(e.device).replace("\\",'')).used)
             prc=pu.disk_usage(str(e.device).replace("\\",'')).percent
-            print(str(e.device).replace("\\",'')+str(total)+str(used)+str(prc))
+            if(prc>90):
+                warn()
+                log("Diskul:"+str(e.device).replace("\\",'')+' are spatiul ocupat:'+ str(prc)+'%')
+            string=string+str(e.device).replace("\\",'')+' '+str(total)+' '+str(used)+' '+str(prc)+'% \n'
     except PermissionError:
-        print("Eroare de permisiune pentru diskul: "+str(e.device).replace("\\",'') )
+        string=string+"Eroare de permisiune pentru diskul: "+str(e.device).replace("\\",'')
+    return string
 
 def gpu():
+    '''returneaza brand gpu'''
+    string=''
+    i=0
     for e in gu.getGPUs():
-        print(e.name)
-        print(e.temperature)
-        print(e.memoryTotal)
-        print(e.memoryUsed)
-        print(e.load*100)
+        string = string + "GPU " + str(i) + ':' + str(e.name) + ' Memorie totala: '+str(get_size(int(e.memoryTotal)*(1024**2)))+' Memorie utilizata '+str(get_size(int(e.memoryUsed)*(1024**2)))
+    return string
 
 def gpuld():
+    '''returneaza utilizare gpu'''
     string =''
     i=0
     for e in gu.getGPUs():
         if(e.load*100>75):
             warn()
+            log("S-a depasit limita de utilizare a GPU!")
             return ("S-a depasit limita de utilizare a GPU!")
     string=string+"GPU "+str(i)+':'+str(e.load*100)+'% '
     return string
 
-
+def gputemp():
+    '''returneaza temp gpu'''
+    string = ''
+    i = 0
+    for e in gu.getGPUs():
+        if(e.temperature>80):
+            warn()
+            log("GPU"+str(i)+" s-a supraincalzit!")
+        string=string+"Temperatura GPU"+str(i)+':'+str(e.temperature)+'C'
+    return string
 
 
 print(cpu())
 print(cores())
 print(cpuld())
 print(memory())
-disk()
-gpu()
+print(disk())
+print(gpu())
 print(gpuld())
+print(gputemp())
+
