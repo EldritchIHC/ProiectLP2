@@ -4,9 +4,16 @@ import GPUtil as gu
 import numpy as np
 import simpleaudio as sa
 from datetime import datetime
-
+'''
+pentru requirments ,in terminal:
+py -m pip freeze > requirements.txt
+py -m pip install -r requirements.txt
+'''
 def warn():
-    '''functie de avertizare sonora'''
+    '''functie de avertizare sonora
+    sursa
+    https://realpython.com/playing-and-recording-sound-python/
+    '''
     f = 660  #nota
     fs = 44100  #samples
     s = 1  #secunde
@@ -26,7 +33,10 @@ def log(f):
         log.write("Eroare:"+f+' \n'+' \n')
 
 def get_size(bytes, suffix="B"):
-    '''modifica valorile de la bytes la multiplii'''
+    '''modifica valorile de la bytes la multiplii
+    sursa:
+    https://www.thepythoncode.com/article/get-hardware-system-information-python?fbclid=IwAR2nU2AbBgcl18qB4ak2XByfBMnlcuHEweU84uTHG0pW5dquQQnNJBP-wvM
+    '''
     factor = 1024
     for unit in ["", "K", "M", "G", "T", "P"]:
         if bytes < factor:
