@@ -43,6 +43,13 @@ def get_size(bytes, suffix="B"):
             return f"{bytes:.2f}{unit}{suffix}"
         bytes /= factor
 
+def newline(i):
+    '''pune 4 nuclee pe rand'''
+    if(i%2==1):
+        return "\n"
+    else :
+        return ''
+
 def cpu():
     '''returneaza brand procesor'''
     return cpuinfo.get_cpu_info()['brand_raw']
@@ -57,8 +64,8 @@ def cpuld():
             warn()
             log("S-a depasit limita de utilizare a nucleului "+ str(i))
             #string=string+ ("S-a depasit limita de utilizare a nucleului "+ str(i)+'\n')
+        string=string+"Nucleul "+str(i)+":"+ str(e)+"% "+newline(i)
         i = i + 1
-        string=string+"Nucleul "+str(i)+":"+ str(e)+"% "
     return string
 
 def cores():
@@ -98,7 +105,7 @@ def gpu():
     string=''
     i=0
     for e in gu.getGPUs():
-        string = string + "GPU " + str(i) + ':' + str(e.name) + ' Memorie totala: '+str(get_size(int(e.memoryTotal)*(1024**2)))+' Memorie utilizata: '+str(get_size(int(e.memoryUsed)*(1024**2)))
+        string = string + "GPU " + str(i) + ':' + str(e.name) + '\nMemorie totala: '+str(get_size(int(e.memoryTotal)*(1024**2)))+'\nMemorie utilizata: '+str(get_size(int(e.memoryUsed)*(1024**2)))
     return string
 
 def gpuld():
