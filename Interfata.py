@@ -3,8 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 
 import os
-#fg
-#33
+
 '''
 os.startfile('log.txt')
 '''
