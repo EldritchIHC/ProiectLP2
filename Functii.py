@@ -125,12 +125,12 @@ def gputemp():
     return string
 
 
-print(cpu())
-print(cores())
-print(cpuld())
-print(memory())
-print(disk())
-print(gpu())
-print(gpuld())
-print(gputemp())
+#print(cpu())
+#print(cores())
+#print(cpuld())
+#print(memory())
+#print(disk())
+#print(gpu())
+#print(gpuld())
+#print(gputemp())
 
