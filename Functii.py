@@ -16,14 +16,14 @@ def warn():
     '''
     f = 660  #nota
     fs = 44100  #samples
-    s = 1  #secunde
+    s = 1 #secunde
     t = np.linspace(0, s, s * fs, False)
     note = np.sin(f * t * 2 * np.pi)
     audio = note * (2 ** 15 - 1) / np.max(np.abs(note))
     audio = audio.astype(np.int16)
     for i in range(0,3):#3 semnale
         play_obj = sa.play_buffer(audio, 1, 2, fs)
-        sa.sleep(2)
+        sa.sleep(1)
     play_obj.wait_done()
 
 def log(f):
@@ -44,7 +44,7 @@ def get_size(bytes, suffix="B"):
         bytes /= factor
 
 def newline(i):
-    '''pune 4 nuclee pe rand'''
+    '''pune 2 nuclee pe rand'''
     if(i%2==1):
         return "\n"
     else :
@@ -76,11 +76,17 @@ def cores():
 def memory():
     '''retuneaza memoria ram instalata'''
     mem=pu.virtual_memory()
-    string = "Memorie totala: " + get_size(mem.total) + "\n" + "Memorie disponibila: " + get_size(mem.available) + "\n" + "Memorie utilizata: " + get_size(mem.used) + ' ' + str(mem.percent) + '%'
-    if(mem.percent>90):
+    string = "Memorie totala: " + get_size(mem.total)
+    return string
+
+def memoryld():
+    '''retuneaza memoria libera,utlizata si procentul'''
+    mem = pu.virtual_memory()
+    string ="Memorie disponibila: " + get_size(mem.available) +  "\nMemorie utilizata: " + get_size(mem.used) + ' Procent :' + str(mem.percent) + '%'
+    if (mem.percent > 90):
         warn()
         log("S-a depasit limita de utilizare a memoriei RAM!")
-        string=string+"\nS-a depasit limita de utilizare a memoriei RAM!"
+        string = string + "\nS-a depasit limita de utilizare a memoriei RAM!"
     return string
 
 def disk():
