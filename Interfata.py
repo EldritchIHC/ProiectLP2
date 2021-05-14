@@ -20,7 +20,11 @@ def getprocent(string):
         e=float(e.strip(":%"))
         lista[i]=e
         i+=1
-    return max(lista)
+    try:
+        return max(lista)
+    except ValueError:
+        return "Eroare la citire"
+
 
 def labelcolor(prc):
     '''schimb culoarea textului daca depasesc un procent'''
